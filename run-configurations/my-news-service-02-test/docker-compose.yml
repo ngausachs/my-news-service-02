@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  my-news-service-01-test:
+  my-news-service-02-test:
     image: ${TEST_CONTAINER_IMAGE}
     ports:
       - ${HOST_PORT_PREFIX}55:5555

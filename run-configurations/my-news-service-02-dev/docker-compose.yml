@@ -1,13 +1,14 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  my-news-service-01-dev:
+  my-news-service-02-dev:
     image: ${CONTAINER_REGISTRY_URL}/${CONTAINER_IMAGE_REPOSITORY}:${CONTAINER_IMAGE_TAG}
+
     ports:
       - ${HOST_PORT_PREFIX}55:5555
     volumes:
-      - ${HOST_MSR_LICENSE_FILE}:/tmp/license.xml
-      - ./application.properties:/tmp/application.properties
+      - ${HOST_MSR_LICENSE_FILE}:${GUEST_LIC_MOUNT_POINT}
+      - ./application.properties:${GUEST_APP_PROPS_MOUNT_POINT}
       - ../../:/mnt/project-home/
       - ./local/:/mnt/local/
       - ./scripts/:/mnt/scripts/
@@ -15,8 +16,10 @@ services:
       - ../../code/is-packages/MyNewsService/:${GUEST_IS_HOME}/packages/MyNewsService/
       - ../../code/is-packages/MyMailService/:${GUEST_IS_HOME}/packages/MyMailService/
     environment:
-      - SAG_IS_LICENSE_FILE=/tmp/license.xml
-      - SAG_IS_CONFIG_PROPERTIES=/tmp/application.properties
+      - SAG_IS_LICENSE_FILE=${GUEST_LIC_MOUNT_POINT}
+      - SAG_IS_CONFIG_PROPERTIES=${GUEST_APP_PROPS_MOUNT_POINT} 
+      - LOCAL_PRODUCE_DUMPS=1
+      # SMTP configuration
       - SMTP_HOST_NAME
       - SMTP_HOST_PORT
       - SMTP_USER_EMAIL
